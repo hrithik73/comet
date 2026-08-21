@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
-import { HomeScreen } from '~/screens/home-screen';
+import { HomeStack } from '~/navigation/home-stack';
 import { SettingsScreen } from '~/screens/settings-screen';
 import { navigationTheme, useTheme } from '~/theme';
 
@@ -39,7 +39,7 @@ function Tabs() {
     >
       <Tab.Screen
         name='Home'
-        component={HomeScreen}
+        component={HomeStack}
         options={{ tabBarIcon: icon('home-outline') }}
       />
       <Tab.Screen
