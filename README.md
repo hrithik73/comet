@@ -71,9 +71,9 @@ Icons are regenerated with `scripts/gen-icons.sh`.
 
 ## Screenshots
 
-| Home                   | Photo                    | Settings                       |
-| ---------------------- | ------------------------ | ------------------------------ |
-| ![Home](docs/home.png) | ![Photo](docs/photo.png) | ![Settings](docs/settings.png) |
+| Home | Photo | Settings |
+| :--: | :---: | :------: |
+| <img src="docs/home.png" width="250"> | <img src="docs/photo.png" width="250"> | <img src="docs/settings.png" width="250"> |
 
 ## Contributing
 
