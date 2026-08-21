@@ -1,5 +1,5 @@
 {
-  "name": "comet-expo",
+  "name": "expo-comet",
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
