@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "expo-starter",
+      "name": "comet",
       "dependencies": {
         "@expo/vector-icons": "^15.0.2",
         "@react-navigation/bottom-tabs": "^7.18.17",

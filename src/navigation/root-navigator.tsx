@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
 import { HomeStack } from '~/navigation/home-stack';
@@ -66,7 +66,11 @@ export function RootNavigator() {
         <Drawer.Screen
           name='Tabs'
           component={Tabs}
-          options={{ title: 'Home', drawerIcon: icon('home-outline') }}
+          // The drawer header sits above the tabs, so it names the focused tab.
+          options={({ route }) => ({
+            title: getFocusedRouteNameFromRoute(route) ?? 'Home',
+            drawerIcon: icon('home-outline'),
+          })}
         />
       </Drawer.Navigator>
       {/* Driven by the resolved scheme so a manual override works, not just the OS setting. */}

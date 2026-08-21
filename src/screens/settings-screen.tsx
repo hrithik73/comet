@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { ScrollView, Switch, Text } from 'react-native';
+import { ScrollView, Switch } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Row } from '~/components/row';
@@ -24,8 +24,6 @@ export function SettingsScreen() {
       style={styles.screen}
       contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xl }]}
     >
-      <Text style={styles.title}>Settings</Text>
-
       <Section title='Appearance'>
         {MODES.map(({ mode: value, label }, index) => (
           <Row
@@ -59,13 +57,7 @@ export function SettingsScreen() {
   );
 }
 
-const useStyles = makeStyles(({ colors, spacing, typography }) => ({
+const useStyles = makeStyles(({ colors, spacing }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.lg },
-  title: {
-    ...typography.role.title,
-    fontSize: typography.size.xxl,
-    color: colors.text,
-    marginBottom: spacing.xl,
-  },
 }));
