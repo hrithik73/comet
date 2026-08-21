@@ -13,9 +13,9 @@ Expo 57 + React Native 0.86 starter: navigation, MMKV-backed Zustand store, and 
 
 ```sh
 # omit the name and it asks "What is your app named?"
-npx create-expo-app --template expo-template-comet
+npx create-expo-app --template comet-expo
 # or
-bun create expo-app --template expo-template-comet
+bun create expo-app --template comet-expo
 ```
 
 The app name, slug and bundle id come from `package.json`'s `name`, so the project renames
