@@ -1,15 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 
+import { ThemeMode, useThemeStore } from '~/store/theme-store';
 import {
   ColorScheme,
   ColorTokens,
@@ -21,10 +13,7 @@ import {
   typography,
 } from '~/theme/tokens';
 
-/** What the user picked. `system` follows the OS. */
-export type ThemeMode = 'system' | ColorScheme;
-
-const STORAGE_KEY = 'theme-mode';
+export type { ThemeMode };
 
 export type Theme = {
   colors: ColorTokens;
@@ -43,26 +32,8 @@ const ThemeContext = createContext<Theme | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const systemScheme = useColorScheme();
-  const [mode, setModeState] = useState<ThemeMode>('system');
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY)
-      .then((stored) => {
-        if (stored === 'light' || stored === 'dark' || stored === 'system') {
-          setModeState(stored);
-        }
-      })
-      .catch(() => {
-        // A failed read just means we fall back to `system`; not worth surfacing.
-      })
-      .finally(() => setLoaded(true));
-  }, []);
-
-  const setMode = useCallback((next: ThemeMode) => {
-    setModeState(next);
-    AsyncStorage.setItem(STORAGE_KEY, next).catch(() => {});
-  }, []);
+  const mode = useThemeStore((s) => s.mode);
+  const setMode = useThemeStore((s) => s.setMode);
 
   const resolvedSystem: ColorScheme =
     systemScheme === 'dark' ? 'dark' : 'light';
@@ -81,10 +52,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }),
     [scheme, mode, setMode],
   );
-
-  // Hold the first frame until the stored mode is known, otherwise a dark-mode user
-  // sees a light flash on every cold start.
-  if (!loaded) return null;
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
