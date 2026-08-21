@@ -12,18 +12,22 @@ Expo 57 + React Native 0.86 starter: navigation, MMKV-backed Zustand store, and 
 ## Create a project
 
 ```sh
-# omit the name and it asks "What is your app named?"
 npx create-expo-app --template expo-comet
 # or
 bun create expo-app --template expo-comet
 ```
 
-The app name, slug and bundle id come from `package.json`'s `name`, so the project renames
-itself. Then set your own bundle-id prefix:
+It prompts for the app name (or pass it: `npx create-expo-app MyCoolApp --template expo-comet`).
+Then, inside the new project:
 
 ```sh
-bun run setup   # prompts for e.g. com.acme
+bun install
+bun run setup   # prompts for your bundle-id prefix, e.g. com.acme
 ```
+
+`MyCoolApp` becomes name "My Cool App", slug `my-cool-app`, bundle id `com.acme.mycoolapp`
+(`.dev` suffix on the dev flavour) — all derived in `app.config.ts` from `package.json`'s `name`,
+so there is nothing else to rename.
 
 ## Run
 
