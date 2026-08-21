@@ -1,15 +1,23 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Switch, Text } from 'react-native';
+import { ScrollView, Switch, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Row } from '~/components/row';
 import { Section } from '~/components/section';
-import { colors, spacing } from '~/theme';
+import { makeStyles, ThemeMode, useTheme } from '~/theme';
+
+const MODES: { mode: ThemeMode; label: string }[] = [
+  { mode: 'system', label: 'System' },
+  { mode: 'light', label: 'Light' },
+  { mode: 'dark', label: 'Dark' },
+];
 
 export function SettingsScreen() {
   const insets = useSafeAreaInsets();
+  const { colors, spacing, mode, setMode } = useTheme();
+  const styles = useStyles();
   const [notifications, setNotifications] = useState(true);
-  const [analytics, setAnalytics] = useState(false);
 
   return (
     <ScrollView
@@ -17,6 +25,22 @@ export function SettingsScreen() {
       contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xl }]}
     >
       <Text style={styles.title}>Settings</Text>
+
+      <Section title='Appearance'>
+        {MODES.map(({ mode: value, label }, index) => (
+          <Row
+            key={value}
+            label={label}
+            onPress={() => setMode(value)}
+            last={index === MODES.length - 1}
+            right={
+              mode === value ? (
+                <Ionicons name='checkmark' size={20} color={colors.accent} />
+              ) : null
+            }
+          />
+        ))}
+      </Section>
 
       <Section title='Preferences'>
         <Row
@@ -29,34 +53,19 @@ export function SettingsScreen() {
             />
           }
         />
-        <Row
-          label='Share analytics'
-          right={
-            <Switch
-              value={analytics}
-              onValueChange={setAnalytics}
-              trackColor={{ true: colors.accent }}
-            />
-          }
-          last
-        />
-      </Section>
-
-      <Section title='Account'>
-        <Row label='Email' value='you@example.com' />
-        <Row label='Plan' value='Free' last />
+        <Row label='Version' value='1.0.0' last />
       </Section>
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, spacing, typography }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.lg },
   title: {
-    fontSize: 30,
-    fontWeight: '700',
+    ...typography.role.title,
+    fontSize: typography.size.xxl,
     color: colors.text,
     marginBottom: spacing.xl,
   },
-});
+}));

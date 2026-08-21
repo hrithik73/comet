@@ -1,28 +1,44 @@
 import { ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing } from '~/theme';
+import { makeStyles } from '~/theme';
 
 export function Row({
   label,
   value,
   right,
   last,
+  onPress,
 }: {
   label: string;
   value?: string;
   right?: ReactNode;
   last?: boolean;
+  onPress?: () => void;
 }) {
-  return (
-    <View style={[styles.row, last && styles.rowLast]}>
+  const styles = useStyles();
+
+  const content = (
+    <>
       <Text style={styles.rowLabel}>{label}</Text>
       {right ?? <Text style={styles.rowValue}>{value}</Text>}
-    </View>
+    </>
+  );
+
+  if (!onPress) return <View style={[styles.row, last && styles.rowLast]}>{content}</View>;
+
+  return (
+    <Pressable
+      style={({ pressed }) => [styles.row, last && styles.rowLast, pressed && styles.rowPressed]}
+      onPress={onPress}
+      accessibilityRole='button'
+    >
+      {content}
+    </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, spacing, typography }) => ({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -34,6 +50,7 @@ const styles = StyleSheet.create({
     minHeight: 52,
   },
   rowLast: { borderBottomWidth: 0 },
-  rowLabel: { fontSize: 16, color: colors.text },
-  rowValue: { fontSize: 16, color: colors.muted },
-});
+  rowPressed: { backgroundColor: colors.bg },
+  rowLabel: { ...typography.role.body, color: colors.text },
+  rowValue: { ...typography.role.body, color: colors.textMuted },
+}));

@@ -2,11 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 
-import { AboutScreen } from '~/screens/about-screen';
 import { HomeScreen } from '~/screens/home-screen';
 import { SettingsScreen } from '~/screens/settings-screen';
-import { colors } from '~/theme';
+import { navigationTheme, useTheme } from '~/theme';
 
 export type TabParamList = {
   Home: undefined;
@@ -15,7 +15,6 @@ export type TabParamList = {
 
 export type RootDrawerParamList = {
   Tabs: undefined;
-  About: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -28,13 +27,14 @@ const icon =
   );
 
 function Tabs() {
+  const { colors } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.accent,
-        tabBarInactiveTintColor: colors.muted,
-        tabBarStyle: { borderTopColor: colors.border },
+        tabBarInactiveTintColor: colors.textMuted,
       }}
     >
       <Tab.Screen
@@ -52,15 +52,15 @@ function Tabs() {
 }
 
 export function RootNavigator() {
+  const { colors, scheme } = useTheme();
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme(scheme)}>
       <Drawer.Navigator
         screenOptions={{
           headerShadowVisible: false,
-          headerStyle: { backgroundColor: colors.bg },
-          headerTintColor: colors.text,
           drawerActiveTintColor: colors.accent,
-          drawerInactiveTintColor: colors.muted,
+          drawerInactiveTintColor: colors.textMuted,
         }}
       >
         <Drawer.Screen
@@ -68,12 +68,9 @@ export function RootNavigator() {
           component={Tabs}
           options={{ title: 'Home', drawerIcon: icon('home-outline') }}
         />
-        <Drawer.Screen
-          name='About'
-          component={AboutScreen}
-          options={{ drawerIcon: icon('information-circle-outline') }}
-        />
       </Drawer.Navigator>
+      {/* Driven by the resolved scheme so a manual override works, not just the OS setting. */}
+      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
     </NavigationContainer>
   );
 }

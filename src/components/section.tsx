@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing } from '~/theme';
+import { makeStyles } from '~/theme';
 
 export function Section({ title, children }: { title: string; children: ReactNode }) {
+  const styles = useStyles();
+
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title.toUpperCase()}</Text>
@@ -12,21 +14,19 @@ export function Section({ title, children }: { title: string; children: ReactNod
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, radius, spacing, typography }) => ({
   section: { marginBottom: spacing.xl },
   sectionTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    letterSpacing: 0.6,
-    color: colors.muted,
+    ...typography.role.caption,
+    color: colors.textMuted,
     marginBottom: spacing.sm,
     marginLeft: spacing.xs,
   },
   card: {
     backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
   },
-});
+}));

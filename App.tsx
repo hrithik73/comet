@@ -1,15 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { RootNavigator } from '~/navigation/root-navigator';
+import { ThemeProvider } from '~/theme';
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <RootNavigator />
-        <StatusBar style='auto' />
+        <ThemeProvider>
+          <RootNavigator />
+        </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
