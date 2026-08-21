@@ -1,5 +1,5 @@
 {
-  "name": "comet",
+  "name": "expo-template-comet",
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
@@ -24,17 +24,21 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
+    "setup": "node scripts/setup.mjs",
     "start": "APP_VARIANT=dev expo start",
     "ios": "APP_VARIANT=dev expo prebuild -p ios && APP_VARIANT=dev expo run:ios",
     "android": "APP_VARIANT=dev expo prebuild -p android && APP_VARIANT=dev expo run:android",
     "ios:prod": "APP_VARIANT=prod expo prebuild -p ios && APP_VARIANT=prod expo run:ios",
     "android:prod": "APP_VARIANT=prod expo prebuild -p android && APP_VARIANT=prod expo run:android",
-    "web": "APP_VARIANT=dev expo start --web"
+    "web": "APP_VARIANT=dev expo start --web",
+    "prepack": "cp .gitignore gitignore"
   },
-  "private": true,
   "reanimated": {
     "staticFeatureFlags": {
       "ENABLE_SHARED_ELEMENT_TRANSITIONS": true
     }
-  }
+  },
+  "description": "Expo 57 + React Native starter template: navigation, MMKV-backed Zustand store, themed design system.",
+  "repository": "github:hrithik73/comet",
+  "license": "MIT"
 }

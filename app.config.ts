@@ -1,12 +1,20 @@
 import type { ExpoConfig } from 'expo/config';
+import { name as slug } from './package.json';
 
 // Build flavours: APP_VARIANT=dev installs alongside prod with its own icon and name.
 const isDev = process.env.APP_VARIANT === 'dev';
-const id = `com.hrithik73.comet${isDev ? '.dev' : ''}`;
+// create-expo-app rewrites package.json's name, so the whole project renames from there.
+const name = slug.replace(
+  /(^|-)(\w)/g,
+  (_, sep, c) => (sep ? ' ' : '') + c.toUpperCase(),
+);
+// Change with `bun run setup` (or edit it here).
+const org = 'com.hrithik73';
+const id = `${org}.${slug.replace(/-/g, '')}${isDev ? '.dev' : ''}`;
 
 const config: ExpoConfig = {
-  name: isDev ? 'Comet (Dev)' : 'Comet',
-  slug: 'comet',
+  name: isDev ? `${name} (Dev)` : name,
+  slug,
   version: '1.0.0',
   description: 'A starter template for Expo projects.',
   orientation: 'portrait',
