@@ -1,4 +1,4 @@
-![Comet logo](docs/logo.png)
+<img src="docs/logo.png" alt="Comet logo" width="120">
 
 # Comet
 
