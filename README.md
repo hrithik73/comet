@@ -13,6 +13,8 @@ Expo 57 + React Native 0.86 starter: navigation, MMKV-backed Zustand store, and 
 
 ```sh
 npx create-expo-app Hello --template https://github.com/hrithik73/comet
+# or
+bun create expo-app Hello --template https://github.com/hrithik73/comet
 ```
 
 ## Run
