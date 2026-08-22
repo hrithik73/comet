@@ -1,6 +1,6 @@
 import type { RouteProp } from '@react-navigation/native';
-import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
-import { useLayoutEffect } from 'react';
+import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import { useCallback } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Animated, { FadeInDown, SharedTransitionBoundary } from 'react-native-reanimated';
 
@@ -16,11 +16,15 @@ export function PhotoScreen() {
 
   // The drawer sits above this stack and draws its own header — hide it while
   // the photo is open so the image runs edge to edge under one transparent bar.
-  useLayoutEffect(() => {
-    const drawer = navigation.getParent()?.getParent();
-    drawer?.setOptions({ headerShown: false });
-    return () => drawer?.setOptions({ headerShown: true });
-  }, [navigation]);
+  // Keyed to focus, not mount: switching tabs leaves this screen mounted in the
+  // Home stack, so an unmount cleanup would never restore the drawer's header.
+  useFocusEffect(
+    useCallback(() => {
+      const drawer = navigation.getParent()?.getParent();
+      drawer?.setOptions({ headerShown: false });
+      return () => drawer?.setOptions({ headerShown: true });
+    }, [navigation]),
+  );
 
   return (
     <SharedTransitionBoundary isActive={isFocused}>
