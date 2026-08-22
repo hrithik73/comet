@@ -37,6 +37,9 @@ const config: ExpoConfig = {
   web: {
     favicon: './src/assets/favicon.png',
   },
+  // Points the Android theme at Material 3 so the native tab bar matches the
+  // platform. iOS needs nothing here — UITabBar picks up Liquid Glass on 26+.
+  plugins: [['react-native-bottom-tabs', { theme: 'material3' }]],
 };
 
 export default config;

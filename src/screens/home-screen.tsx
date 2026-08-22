@@ -25,15 +25,17 @@ export function HomeScreen() {
   return (
     <SharedTransitionBoundary isActive={isFocused}>
       <FlatList
-        data={photos}
+        data={photos.slice(0, 2)}
         keyExtractor={(p) => p.id}
         numColumns={2}
         contentContainerStyle={styles.list}
         columnWrapperStyle={styles.column}
         ListHeaderComponent={
-          <Animated.Text entering={FadeInDown.duration(420)} style={styles.title}>
-            Hello
-          </Animated.Text>
+          <Animated.View entering={FadeInDown.duration(420)} style={styles.brand}>
+            <Image source={require('~/assets/icon.png')} style={styles.logo} />
+            <Text style={styles.title}>Comet</Text>
+            <Text style={styles.tagline}>A batteries-included Expo starter</Text>
+          </Animated.View>
         }
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeInDown.delay(60 + index * 40).duration(420)}>
@@ -62,11 +64,10 @@ export function HomeScreen() {
 const useStyles = makeStyles(({ colors, spacing, radius, typography }) => ({
   list: { padding: spacing.lg, backgroundColor: colors.bg, flexGrow: 1 },
   column: { gap: spacing.md, marginBottom: spacing.md },
-  title: {
-    ...typography.role.title,
-    color: colors.text,
-    marginBottom: spacing.lg,
-  },
+  brand: { alignItems: 'center', marginBottom: spacing.lg, gap: spacing.xs },
+  logo: { width: 72, height: 72, borderRadius: radius.lg },
+  title: { ...typography.role.title, color: colors.text },
+  tagline: { ...typography.role.label, color: colors.textMuted },
   thumb: {
     flex: 1,
     aspectRatio: 1,
