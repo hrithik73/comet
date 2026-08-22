@@ -1,8 +1,13 @@
+import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation';
 import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
+import {
+  getFocusedRouteNameFromRoute,
+  NavigationContainer,
+} from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+
+import type { SFSymbol } from 'sf-symbols-typescript';
 
 import { HomeStack } from '~/navigation/home-stack';
 import { SettingsScreen } from '~/screens/settings-screen';
@@ -17,7 +22,7 @@ export type RootDrawerParamList = {
   Tabs: undefined;
 };
 
-const Tab = createBottomTabNavigator<TabParamList>();
+const Tab = createNativeBottomTabNavigator<TabParamList>();
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
 const icon =
@@ -26,26 +31,29 @@ const icon =
     <Ionicons name={name} color={color} size={size} />
   );
 
+/** The native tab bar takes SF Symbols on iOS and drawables/images on Android. */
+const sfSymbol = (sfSymbol: SFSymbol) => () => ({ sfSymbol });
+
 function Tabs() {
   const { colors } = useTheme();
 
   return (
     <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: colors.accent,
-        tabBarInactiveTintColor: colors.textMuted,
-      }}
+      // Renders a real UITabBar, so iOS 26 gives it Liquid Glass for free —
+      // including the scroll-away minimize behaviour. Pre-26 it falls back to
+      // the standard translucent bar.
+      screenOptions={{ tabBarActiveTintColor: colors.accent }}
+      minimizeBehavior='onScrollDown'
     >
       <Tab.Screen
         name='Home'
         component={HomeStack}
-        options={{ tabBarIcon: icon('home-outline') }}
+        options={{ tabBarIcon: sfSymbol('house') }}
       />
       <Tab.Screen
         name='Settings'
         component={SettingsScreen}
-        options={{ tabBarIcon: icon('settings-outline') }}
+        options={{ tabBarIcon: sfSymbol('gearshape') }}
       />
     </Tab.Navigator>
   );
